@@ -34,10 +34,19 @@ MinHeapNode(char data, int freq)
     }
 };
 
+struct character{
+    char letter;
+    int frequency;
+    character(){
+        frequency = 0;
+    }
+};
+
+
 void printCodes(MinHeapNode* root, string str){
     if(root == NULL)
         return;
-    if(root->data != '$')
+    if(root->data != '^')
         cout << root->data << ": " << str << endl;
     printCodes(root->left, str + "0");
     printCodes(root->right, str + "1");
@@ -80,7 +89,7 @@ void HuffmanCodes(char data[], int freq[], int size)
         // of this new node. Add this node
         // to the min heap '$' is a special value
         // for internal nodes, not used
-        top = new MinHeapNode('$', left->freq + right->freq);
+        top = new MinHeapNode('^', left->freq + right->freq);
 
         top->left = left;
         top->right = right;
@@ -93,13 +102,6 @@ void HuffmanCodes(char data[], int freq[], int size)
     printCodes(minHeap.top(), "");
 }
 
-struct character{
-    char letter;
-    int frequency;
-    character(){
-        frequency = 0;
-    }
-};
 
 vector<character> putIntoArray(string line){
     vector <character> charArray;
