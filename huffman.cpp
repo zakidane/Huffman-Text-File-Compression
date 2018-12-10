@@ -15,21 +15,25 @@ using namespace std;
 
 int main() {
 
-    string line, file;
+    string line, file, compressedString, decompressedLine;
+    int sizeArray, index;
+    vector<MinHeapNode>CharArray;
     cout << "INpUt fILe NamE: " << endl;
     getline(cin, file);
     ifstream infile(file);
-    getline(infile, line,'\n');
-    cout << "original LIne: " << endl;
-    cout << line << endl;
-    vector<character>CharArray = putIntoArray(line);
-    int sizeLine = CharArray.size();
-    cout << "size of charArray is " << sizeLine << endl;
-    char heapData[sizeLine];
-    int heapFrequencies[sizeLine];
-    for(int i = 0; i < sizeLine; i++){
-        heapData[i] = CharArray[i].letter;
-        heapFrequencies[i] = CharArray[i].frequency;
+    ofstream compressedfile("compressed.txt");
+    ofstream decompressedfile("decompressed.txt");
+    while(getline(infile, line,'\n')){
+      putIntoArray(line, CharArray);
+
+    }
+    sizeArray = CharArray.size();
+    cout << "size of charArray is " << sizeArray << endl;
+    char heapData[sizeArray];
+    int heapFrequencies[sizeArray];
+    for(int i = 0; i < sizeArray; i++){
+        heapData[i] = CharArray[i].data;
+        heapFrequencies[i] = CharArray[i].freq;
     }
 
       //declare a Minheap node to store the pointer to the minheap top
@@ -37,7 +41,7 @@ int main() {
       MinHeapNode* root;
 
       //this line will assign binary codes to each struct of the vector
-      std::vector<MinHeapNode* > v = HuffmanCodes(heapData, heapFrequencies, sizeLine, root);
+      std::vector<MinHeapNode* > v = HuffmanCodes(heapData, heapFrequencies, sizeArray, root);
 
   // This pushes the vector of struct pointers into a returnHashTable
       //that assigns them to indexes according to the character's ascii code
@@ -51,22 +55,47 @@ int main() {
     //associated with the character, retrive the corresponding Minheap pointer
     //associated with the character and print out the binaryCode of the character
     //We do this for all the characters in the line in their order of appearance
-    int index;
-    string rawString;
-    cout << "Huffman Compressed Line" << endl;
-    cout << "----------" << endl;
-    for(unsigned int i = 0; i < line.length();i++){
-        index = returnHashValue(line[i]);
-        rawString += hashTable[index]->binaryCode;
-        cout << hashTable[index]->binaryCode;
 
+
+    //the following three lines reset the infile stream to start reading from
+    //the beginning of the file again.
+    infile.clear();
+    infile.seekg (0, ios::beg);
+    line = "";
+    int x = 1;
+    while(getline(infile, line)){
+      cout << line << endl;
+      for(unsigned int i = 0; i < line.size();i++){
+          index = returnHashValue(line[i]);
+          compressedString += hashTable[index]->binaryCode;
+      }
+      compressedString+= "-";
+      cout << "line " << x << " " << compressedString << endl;
+      cout << " for " << line << endl;
+      x++;
+      //append a dummy string and add line to the output file
+
+      compressedfile << compressedString << endl;
+      compressedString = "";
+      line = "";
     }
-    //rawString+="-";
-    cout << "-" << endl;
-    cout << "Huffman Decompressed Line" << endl;
-    string decompressedLine = decompression(rawString, root);
-    cout << decompressedLine << endl;
+    //close both the input file and the output file that has all the binaryCode
+    infile.close();
+    compressedfile.close();
+
+    //open the compressed.txt file to translate it back to its oriignal text
+    ifstream compressedInput("compressed.txt");
+
+    while(getline(compressedInput, compressedString)){
+      decompressedLine = decompression(compressedString, root);
+      cout << "decompressed Line: " << endl;
+      cout << decompressedLine << endl;
+      decompressedfile << decompressedLine << endl;
+  }
 
 
-	return 0;
+
+    decompressedfile.close();
+
+    return 0;
 }

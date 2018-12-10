@@ -9,11 +9,8 @@
 
 using namespace std;
 
-//the following are the two structs needed for this program.
-//one is a MinHeapNode struct and the other a character structs
-//they are essentially the same thing (that is, structs of characters that have
-//have a char data element and a frequency element). However, the MinHeap node
-//has an additional binaryCode member)
+//the following struct is the MinHeapNode struct which will be used to store
+//a character, it's frequency of occurence in each line and its binaryCode
 struct MinHeapNode {
 
     // One of the input characters
@@ -43,15 +40,6 @@ MinHeapNode(char data, int freq)
     }
 };
 
-struct character{
-    char letter;
-    int frequency;
-    character(){
-        frequency = 0;
-    }
-};
-
-
 
 //declares the returnHashTable helper function returnHashValue
 int returnHashValue(MinHeapNode* minHeapPointer);
@@ -60,7 +48,7 @@ void returnCodes(MinHeapNode* root, string str, vector<MinHeapNode*>& v, int ind
 
 vector<MinHeapNode*>  HuffmanCodes(char data[], int freq[], int size, MinHeapNode* &root);
 
-vector<character> putIntoArray(string line);
+void putIntoArray(string line, vector<MinHeapNode> &v);
 
 int returnHashValue(char Character);
 

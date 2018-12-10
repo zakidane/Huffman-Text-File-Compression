@@ -78,15 +78,15 @@ vector<MinHeapNode*>  HuffmanCodes(char data[], int freq[], int size, MinHeapNod
 
 
 
-vector<character> putIntoArray(string line){
-    vector <character> charArray;
+void putIntoArray(string line, vector <MinHeapNode>& charArray){
+
     for(int i = 0; i < line.size(); i++){
-        vector <character>::iterator n;
+        vector <MinHeapNode>::iterator n;
         int k = 0;
         bool found = false;
         for(n = charArray.begin(); n != charArray.end(); n++){
-            if(line[i] == charArray[k].letter){
-                charArray[k].frequency++;
+            if(line[i] == charArray[k].data){
+                charArray[k].freq++;
                 found = true;
                 break;
             }
@@ -98,13 +98,12 @@ vector<character> putIntoArray(string line){
 
         }
         if(found == false){
-                character NewCharacter;
-                NewCharacter.letter = line[i];
-                NewCharacter.frequency = 1;
+                MinHeapNode NewCharacter;
+                NewCharacter.data = line[i];
+                NewCharacter.freq = 1;
                 charArray.push_back(NewCharacter);
         }
     }
-    return charArray;
 
 }
 

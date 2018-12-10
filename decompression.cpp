@@ -10,6 +10,8 @@ string decompression(string rawString, MinHeapNode* root){
   string decodedString;
   MinHeapNode* copyroot = root;
   for(unsigned int i = 0; i < rawString.length(); i++){
+    if(rawString[i] == '-')
+      break;
     if(rawString[i] == '0')
       copyroot = copyroot->left;
     else
